@@ -16,7 +16,7 @@ from .internal import (delta2 as internal_delta2,
                        glacier as internal_glacier,
                        wave2 as internal_wave2, )
 from .public import (delta_pro as public_delta_pro,
-                     deltap_pro3 as public_delta_pro3,
+                     delta_pro3 as public_delta_pro3,
                      delta2 as public_delta2,
                      delta2_max as public_delta2_max,
                      river2 as public_river2,
