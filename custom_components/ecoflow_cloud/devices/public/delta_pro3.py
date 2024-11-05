@@ -14,13 +14,9 @@ class DeltaPro3(BaseDevice):
         return [
             LevelSensorEntity(client, self, "bmsBattSoc", const.MAIN_BATTERY_LEVEL)
             .attr("bmsDesignCap", const.ATTR_DESIGN_CAPACITY, 0),
-            LevelSensorEntity(client, self, "bmsMaster.f32ShowSoc", const.MAIN_BATTERY_LEVEL_F32, False)
-            .attr("bmsDesignCap", const.ATTR_DESIGN_CAPACITY, 0),
             CapacitySensorEntity(client, self, "bmsDesignCap", const.MAIN_DESIGN_CAPACITY, False),
             LevelSensorEntity(client, self, "bmsBattSoh", const.SOH),
 
-            LevelSensorEntity(client, self, "ems.lcdShowSoc", const.COMBINED_BATTERY_LEVEL),
-            LevelSensorEntity(client, self, "ems.f32LcdShowSoc", const.COMBINED_BATTERY_LEVEL_F32, False),
             WattsSensorEntity(client, self, "powInSumW", const.TOTAL_IN_POWER),
             WattsSensorEntity(client, self, "powOutSumW", const.TOTAL_OUT_POWER),
 
