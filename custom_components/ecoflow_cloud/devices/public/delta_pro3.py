@@ -18,23 +18,17 @@ from custom_components.ecoflow_cloud.switch import BeeperEntity, EnabledEntity
 class DeltaPro3(BaseDevice):
     def sensors(self, client: EcoflowApiClient) -> list[BaseSensorEntity]:
         return [
-            LevelSensorEntity(client, self, "cmsBattSoc", const.MAIN_BATTERY_LEVEL)
-            .attr("bmsDesignCap", const.ATTR_DESIGN_CAPACITY, 0)
-            .attr("bmsMaster.fullCap", const.ATTR_FULL_CAPACITY, 0)
-            .attr("bmsMaster.remainCap", const.ATTR_REMAIN_CAPACITY, 0),
+            LevelSensorEntity(client, self, "bmsBattSoc", const.MAIN_BATTERY_LEVEL)
+            .attr("bmsDesignCap", const.ATTR_DESIGN_CAPACITY, 0),
             LevelSensorEntity(client, self, "bmsMaster.f32ShowSoc", const.MAIN_BATTERY_LEVEL_F32, False)
-            .attr("bmsMaster.designCap", const.ATTR_DESIGN_CAPACITY, 0)
-            .attr("bmsMaster.fullCap", const.ATTR_FULL_CAPACITY, 0)
-            .attr("bmsMaster.remainCap", const.ATTR_REMAIN_CAPACITY, 0),
-            CapacitySensorEntity(client, self, "bmsMaster.designCap", const.MAIN_DESIGN_CAPACITY, False),
-            CapacitySensorEntity(client, self, "bmsMaster.fullCap", const.MAIN_FULL_CAPACITY, False),
-            CapacitySensorEntity(client, self, "bmsMaster.remainCap", const.MAIN_REMAIN_CAPACITY, False),
-            LevelSensorEntity(client, self, "bmsMaster.soh", const.SOH),
+            .attr("bmsDesignCap", const.ATTR_DESIGN_CAPACITY, 0),
+            CapacitySensorEntity(client, self, "bmsDesignCap", const.MAIN_DESIGN_CAPACITY, False),
+            LevelSensorEntity(client, self, "bmsBattSoh", const.SOH),
 
             LevelSensorEntity(client, self, "ems.lcdShowSoc", const.COMBINED_BATTERY_LEVEL),
             LevelSensorEntity(client, self, "ems.f32LcdShowSoc", const.COMBINED_BATTERY_LEVEL_F32, False),
-            WattsSensorEntity(client, self, "pd.wattsInSum", const.TOTAL_IN_POWER),
-            WattsSensorEntity(client, self, "pd.wattsOutSum", const.TOTAL_OUT_POWER),
+            WattsSensorEntity(client, self, "powInSumW", const.TOTAL_IN_POWER),
+            WattsSensorEntity(client, self, "powOutSumW", const.TOTAL_OUT_POWER),
             AmpSensorEntity(client, self, "bmsMaster.amp", const.MAIN_BATTERY_CURRENT),
 
             InWattsSensorEntity(client, self, "powGetAcIn", const.AC_IN_POWER),
@@ -53,24 +47,24 @@ class DeltaPro3(BaseDevice):
             OutWattsSensorEntity(client, self, "mppt.carOutWatts", const.DC_CAR_OUT_POWER),
             OutWattsSensorEntity(client, self, "mppt.dcdc12vWatts", const.DC_ANDERSON_OUT_POWER),
 
-            OutWattsSensorEntity(client, self, "pd.typec1Watts", const.TYPEC_1_OUT_POWER),
-            OutWattsSensorEntity(client, self, "pd.typec2Watts", const.TYPEC_2_OUT_POWER),
+            OutWattsSensorEntity(client, self, "powGetTypec1", const.TYPEC_1_OUT_POWER),
+            OutWattsSensorEntity(client, self, "powGetTypec2", const.TYPEC_2_OUT_POWER),
 
             OutWattsSensorEntity(client, self, "pd.usb1Watts", const.USB_1_OUT_POWER),
             OutWattsSensorEntity(client, self, "pd.usb2Watts", const.USB_2_OUT_POWER),
 
-            OutWattsSensorEntity(client, self, "pd.qcUsb1Watts", const.USB_QC_1_OUT_POWER),
-            OutWattsSensorEntity(client, self, "pd.qcUsb2Watts", const.USB_QC_2_OUT_POWER),
+            OutWattsSensorEntity(client, self, "powGetQcusb1", const.USB_QC_1_OUT_POWER),
+            OutWattsSensorEntity(client, self, "powGetQcusb2", const.USB_QC_2_OUT_POWER),
 
-            RemainSensorEntity(client, self, "ems.chgRemainTime", const.CHARGE_REMAINING_TIME),
-            RemainSensorEntity(client, self, "ems.dsgRemainTime", const.DISCHARGE_REMAINING_TIME),
+            RemainSensorEntity(client, self, "bmsChgRemTime", const.CHARGE_REMAINING_TIME),
+            RemainSensorEntity(client, self, "cmsDsgRemTime", const.DISCHARGE_REMAINING_TIME),
             CyclesSensorEntity(client, self, "bmsMaster.cycles", const.CYCLES),
 
             TempSensorEntity(client, self, "bmsMaxCellTemp", const.BATTERY_TEMP)
-            .attr("bmsMaster.minCellTemp", const.ATTR_MIN_CELL_TEMP, 0)
-            .attr("bmsMaster.maxCellTemp", const.ATTR_MAX_CELL_TEMP, 0),
-            TempSensorEntity(client, self, "bmsMaster.minCellTemp", const.MIN_CELL_TEMP, False),
-            TempSensorEntity(client, self, "bmsMaster.maxCellTemp", const.MAX_CELL_TEMP, False),
+            .attr("bmsMinCellTemp", const.ATTR_MIN_CELL_TEMP, 0)
+            .attr("bmsMaxCellTemp", const.ATTR_MAX_CELL_TEMP, 0),
+            TempSensorEntity(client, self, "bmsMinCellTemp", const.MIN_CELL_TEMP, False),
+            TempSensorEntity(client, self, "bmsMaxCellTemp", const.MAX_CELL_TEMP, False),
 
             MilliVoltSensorEntity(client, self, "bmsMaster.vol", const.BATTERY_VOLT, False)
             .attr("bmsMaster.minCellVol", const.ATTR_MIN_CELL_VOLT, 0)
