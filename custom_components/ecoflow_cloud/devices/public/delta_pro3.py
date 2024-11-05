@@ -1,6 +1,7 @@
 from custom_components.ecoflow_cloud.api import EcoflowApiClient
 from custom_components.ecoflow_cloud.devices import const, BaseDevice
-from custom_components.ecoflow_cloud.entities import BaseSensorEntity
+from custom_components.ecoflow_cloud.entities import BaseSensorEntity, BaseNumberEntity, BaseSwitchEntity, \
+    BaseSelectEntity
 from custom_components.ecoflow_cloud.sensor import LevelSensorEntity, WattsSensorEntity, RemainSensorEntity, \
     TempSensorEntity, \
     InWattsSensorEntity, OutWattsSensorEntity, \
@@ -44,3 +45,10 @@ class DeltaPro3(BaseDevice):
             QuotaStatusSensorEntity(client, self)
         ]
 
+
+    def numbers(self, client: EcoflowApiClient) -> list[BaseNumberEntity]:
+        return []
+    def switches(self, client: EcoflowApiClient) -> list[BaseSwitchEntity]:
+        return []
+    def selects(self, client: EcoflowApiClient) -> list[BaseSelectEntity]:
+        return []
