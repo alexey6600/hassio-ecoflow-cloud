@@ -1,7 +1,6 @@
 from custom_components.ecoflow_cloud.api import EcoflowApiClient
 from custom_components.ecoflow_cloud.devices import const, BaseDevice
-from custom_components.ecoflow_cloud.entities import BaseSensorEntity, BaseNumberEntity, BaseSwitchEntity, \
-    BaseSelectEntity
+from custom_components.ecoflow_cloud.entities import BaseSensorEntity
 from custom_components.ecoflow_cloud.number import ChargingPowerEntity, MaxBatteryLevelEntity, MinBatteryLevelEntity, \
     MinGenStartLevelEntity, \
     MaxGenStopLevelEntity
@@ -133,74 +132,4 @@ class DeltaPro3(BaseDevice):
             CyclesSensorEntity(client, self, "bmsSlave1.cycles", const.SLAVE_N_CYCLES % 1, False),
             CyclesSensorEntity(client, self, "bmsSlave2.cycles", const.SLAVE_N_CYCLES % 2, False),
             QuotaStatusSensorEntity(client, self)
-        ]
-
-    def numbers(self, client: EcoflowApiClient) -> list[BaseNumberEntity]:
-        return [
-            MaxBatteryLevelEntity(client, self, "ems.maxChargeSoc", const.MAX_CHARGE_LEVEL, 50, 100,
-                                  lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                 "params": {"id": 49, "maxChgSoc": value}}),
-            MinBatteryLevelEntity(client, self, "ems.minDsgSoc", const.MIN_DISCHARGE_LEVEL, 0, 30,
-                                  lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                 "params": {"id": 51, "minDsgSoc": value}}),
-            MaxBatteryLevelEntity(client, self, "pd.bppowerSoc", const.BACKUP_RESERVE_LEVEL, 5, 100,
-                                  lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                 "params": {"isConfig": 1, "bpPowerSoc": int(value), "minDsgSoc": 0,
-                                                            "maxChgSoc": 0, "id": 94}}),
-            MinGenStartLevelEntity(client, self, "ems.minOpenOilEbSoc", const.GEN_AUTO_START_LEVEL, 0, 30,
-                                   lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                  "params": {"openOilSoc": value, "id": 52}}),
-
-            MaxGenStopLevelEntity(client, self, "ems.maxCloseOilEbSoc", const.GEN_AUTO_STOP_LEVEL, 50, 100,
-                                  lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                 "params": {"closeOilSoc": value, "id": 53}}),
-
-            ChargingPowerEntity(client, self, "inv.cfgSlowChgWatts", const.AC_CHARGING_POWER, 200, 2900,
-                                lambda value: {"moduleType": 0, "operateType": "TCP",
-                                               "params": {"slowChgPower": value, "id": 69}}),
-
-        ]
-
-    def switches(self, client: EcoflowApiClient) -> list[BaseSwitchEntity]:
-        return [
-            BeeperEntity(client, self, "pd.beepState", const.BEEPER,
-                         lambda value: {"moduleType": 0, "operateType": "TCP", "params": {"id": 38, "enabled": value}}),
-            EnabledEntity(client, self, "mppt.carState", const.DC_ENABLED,
-                          lambda value: {"moduleType": 0, "operateType": "TCP",
-                                         "params": {"id": 81, "enabled": value}}),
-            EnabledEntity(client, self, "inv.cfgAcEnabled", const.AC_ENABLED,
-                          lambda value: {"moduleType": 0, "operateType": "TCP",
-                                         "params": {"id": 66, "enabled": value}}),
-
-            EnabledEntity(client, self, "inv.cfgAcXboost", const.XBOOST_ENABLED,
-                          lambda value: {"moduleType": 0, "operateType": "TCP", "params": {"id": 66, "xboost": value}}),
-            EnabledEntity(client, self, "pd.acautooutConfig", const.AC_ALWAYS_ENABLED,
-                          lambda value: {"moduleType": 0, "operateType": "TCP",
-                                         "params": {"id": 95, "acautooutConfig": value}}),
-            EnabledEntity(client, self, "pd.watthisconfig", const.BP_ENABLED,
-                          lambda value, params: {"moduleType": 0, "operateType": "TCP",
-                                                 "params": {"id": 94, "isConfig": value,
-                                                            "bpPowerSoc": value * 50,
-                                                            "minDsgSoc": 0,
-                                                            "maxChgSoc": 0}}),
-        ]
-
-    def selects(self, client: EcoflowApiClient) -> list[BaseSelectEntity]:
-        return [
-            DictSelectEntity(client, self, "mppt.cfgDcChgCurrent", const.DC_CHARGE_CURRENT, const.DC_CHARGE_CURRENT_OPTIONS,
-                             lambda value: {"moduleType": 0, "operateType": "TCP",
-                                            "params": {"currMa": value, "id": 71}}),
-
-            TimeoutDictSelectEntity(client, self, "pd.lcdOffSec", const.SCREEN_TIMEOUT, const.SCREEN_TIMEOUT_OPTIONS,
-                                    lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                   "params": {"lcdTime": value, "id": 39}}),
-
-            TimeoutDictSelectEntity(client, self, "pd.standByMode", const.UNIT_TIMEOUT, const.UNIT_TIMEOUT_OPTIONS_LIMITED,
-                                    lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                   "params": {"standByMode": value, "id": 33}}),
-
-            TimeoutDictSelectEntity(client, self, "inv.cfgStandbyMin", const.AC_TIMEOUT, const.AC_TIMEOUT_OPTIONS,
-                                    lambda value: {"moduleType": 0, "operateType": "TCP",
-                                                   "params": {"standByMins": value, "id": 153}}),
-
         ]
