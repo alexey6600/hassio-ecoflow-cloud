@@ -18,8 +18,8 @@ from custom_components.ecoflow_cloud.switch import BeeperEntity, EnabledEntity
 class DeltaPro(BaseDevice):
     def sensors(self, client: EcoflowApiClient) -> list[BaseSensorEntity]:
         return [
-            LevelSensorEntity(client, self, "bmsMaster.soc", const.MAIN_BATTERY_LEVEL)
-            .attr("bmsMaster.designCap", const.ATTR_DESIGN_CAPACITY, 0)
+            LevelSensorEntity(client, self, "bmsBattSoc", const.MAIN_BATTERY_LEVEL)
+            .attr("bmsDesignCap", const.ATTR_DESIGN_CAPACITY, 0)
             .attr("bmsMaster.fullCap", const.ATTR_FULL_CAPACITY, 0)
             .attr("bmsMaster.remainCap", const.ATTR_REMAIN_CAPACITY, 0),
             LevelSensorEntity(client, self, "bmsMaster.f32ShowSoc", const.MAIN_BATTERY_LEVEL_F32, False)
