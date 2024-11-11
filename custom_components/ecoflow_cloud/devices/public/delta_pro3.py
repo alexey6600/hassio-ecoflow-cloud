@@ -15,7 +15,7 @@ from custom_components.ecoflow_cloud.sensor import LevelSensorEntity, WattsSenso
 from custom_components.ecoflow_cloud.switch import BeeperEntity, EnabledEntity
 
 
-class DeltaPro(BaseDevice):
+class DeltaPro3(BaseDevice):
     def sensors(self, client: EcoflowApiClient) -> list[BaseSensorEntity]:
         return [
             LevelSensorEntity(client, self, "bmsBattSoc", const.MAIN_BATTERY_LEVEL)
